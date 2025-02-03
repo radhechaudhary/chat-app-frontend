@@ -32,7 +32,7 @@ function Login(prop) {
       if(values.username!=="" && submitted){
         setSubmmited(false)
         setLoading(true)
-      axios.post("https://chat-app-backend-production-bd09.up.railway.app:8058/login", {username:values.username, password:values.password})
+      axios.post("https://chat-app-backend-production-bd09.up.railway.app/login", {username:values.username, password:values.password})
       .then((response)=>{
         if(response.data.status==="valid"){
           prop.setcurrUser(response.data.username);

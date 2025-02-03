@@ -16,7 +16,7 @@ import img from './icon.png'
 
 
 
-const socket = io('https://chat-app-backend-production-bd09.up.railway.app:8058');
+const socket = io('https://chat-app-backend-production-bd09.up.railway.app');
   
 function Chat() {
     
@@ -297,7 +297,7 @@ function Chat() {
             formData.append('username', localStorage.getItem('username'));
             formData.append('name', nameInputValue);
             formData.append('bio', bioInputValue);
-            axios.post('https://chat-app-backend-production-bd09.up.railway.app:8058/edit-profile', formData,  {
+            axios.post('https://chat-app-backend-production-bd09.up.railway.app/edit-profile', formData,  {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
               }
