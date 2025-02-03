@@ -16,10 +16,13 @@ import img from './icon.png'
 
 
 
-const socket = io("https://chat-app-backend-production-bd09.up.railway.app", {
-    transports: ["websocket"], // ✅ Force WebSockets instead of polling
-    withCredentials: true,
-  });
+const socket = io("https://chat-app-backend-production-bd09.up.railway.app/edit-profile", {
+    transports: ["websocket"], // Ensure WebSocket is used
+    reconnection: true,       // Enable auto-reconnection
+    reconnectionAttempts: 5,  // Retry 5 times before failing
+    reconnectionDelay: 2000,   // Wait 2s before retrying
+    withCredentials:true
+});
   
 function Chat() {
     
