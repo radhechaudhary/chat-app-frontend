@@ -11,7 +11,7 @@ function Protected(prop) {
   useEffect(()=>{
     setIsLoading(true)
     if(prop.isLoggedIn){
-      axios.post("http://chat-app-backend-production-bd09.up.railway.app:8058/authenticate-user", {username:localStorage.getItem('username')},  {
+      axios.post("https://chat-app-backend-production-bd09.up.railway.app:8058/authenticate-user", {username:localStorage.getItem('username')},  {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
