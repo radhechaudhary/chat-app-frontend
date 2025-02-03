@@ -57,9 +57,9 @@ function Signup(prop) {
         if(values.username!=="" && submitted){
           setSubmmited(false)
           setLoading(true)
-          axios.post("http://localhost:4000/signup", {name:values.name, username:values.username, password:values.password})
+          axios.post("http://chat-app-backend-production-bd09.up.railway.app:8058/signup", {name:values.name, username:values.username, password:values.password})
           .then((response)=>{
-            if(response.data.status==="valid"){
+            if(response.data.status==="valid" || response.data.status==="no file"){
               prop.setcurrUser(response.data.username);
               localStorage.setItem("username", response.data.username);
               localStorage.setItem('isLoggedIn', true)
@@ -91,7 +91,7 @@ function Signup(prop) {
         formData.append('file', image); // 'file' is the field name expected by the server
         formData.append('username', values.username);
         formData.append('token', localStorage.getItem('token'));
-        axios.post("http://localhost:4000/upload-profile-photo", formData)
+        axios.post("http://chat-app-backend-production-bd09.up.railway.app:8058/upload-profile-photo", formData)
         .then((response)=>{
           if(response.data.status==='valid'){
             prop.setLoggedIn(true);

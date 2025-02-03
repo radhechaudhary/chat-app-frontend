@@ -11,7 +11,7 @@ function Protected(prop) {
   useEffect(()=>{
     setIsLoading(true)
     if(prop.isLoggedIn){
-      axios.post("http://localhost:4000/authenticate-user", {username:localStorage.getItem('username')},  {
+      axios.post("http://chat-app-backend-production-bd09.up.railway.app:8058/authenticate-user", {username:localStorage.getItem('username')},  {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
@@ -37,16 +37,20 @@ function Protected(prop) {
     }
     setIsLoading(false)
   },[prop.isLoggedIn])
+
   if(isAunthenticated===null){
     return(
     <div className='enter-page'>
-      {isLoading?<Backdrop
-      sx={(theme) => ({ color: 'rgb(0,0,0)', zIndex: 100 })} open={true}>
+      <Backdrop
+      sx={(theme) => ({ color: 'rgb(0,0,0)', zIndex: 1000 })} open={true}>
         <CircularProgress sx={{color:"white"}} />
-      </Backdrop>:null}
+      </Backdrop>
     </div>)
   }
-  return isAunthenticated?<Outlet/>:null
+  else{
+    return isAunthenticated?<Outlet/>:null
+  }
+  
   
 }
 

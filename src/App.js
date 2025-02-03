@@ -10,7 +10,6 @@ import Signup from "./components/signup";
 function App() {
   const [currUser, setcurrUser]=useState(localStorage.getItem('username'))
   const [isLoggedIn, setLoggedIn]=useState(false)
-  const [remount, setRemount]=useState(false)
   const navigate=useNavigate();
 
   useEffect(()=>{

@@ -12,18 +12,15 @@ function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentC
         setInputValue(e.target.value);  
     }
     useEffect(()=>{   // to add new chat via entering username which triggers when input value changes
-        if(addingNewChat && !makingGroup && inputValue.trim().length>=5){
+        if(addingNewChat && !makingGroup && inputValue.trim().length>=8){
             socket.emit('newChat', inputValue)
-            socket.on('AddnewChat', (message)=>{
-                
+            socket.on('AddnewChat', (message)=>{  
                 if(message.username){
                     if(message.username!==localStorage.getItem('username') && chatList.find((user)=> user.username===message.username )===undefined){
-                        socket.off('AddnewChat')
                         setSearched([message])
                     }  
                 }
                 else{
-                    socket.off('AddnewChat')
                     setSearched([])
                 }
             })
@@ -46,6 +43,9 @@ function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentC
                     }
                 })
             }
+        }
+        return ()=>{
+            socket.off('AddnewChat')
         }
     },[inputValue])
 
@@ -70,12 +70,13 @@ function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentC
                 }
                 return chat;  // Return the original object if no match
             })
+            setCurrentChatUser(updatedChatList[indx])
+            setChatList(updatedChatList)
             socket.emit('update_data', updatedChatList);
             socket.on('update_data',(list)=>{
                 setCurrentChatUser({...list[indx]})
                 setChatList(list);
-            })
-            
+            })    
         }
         setInputValue("")    
     }
