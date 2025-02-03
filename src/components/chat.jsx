@@ -21,6 +21,7 @@ const socket = io("https://chat-app-backend-production-bd09.up.railway.app", {
     withCredentials: true,
   });
   
+  
 function Chat() {
     
     const navigate=useNavigate();
