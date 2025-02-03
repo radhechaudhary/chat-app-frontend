@@ -10,12 +10,10 @@ import Signup from "./components/signup";
 function App() {
   const [currUser, setcurrUser]=useState(localStorage.getItem('username'))
   const [isLoggedIn, setLoggedIn]=useState(false)
+  const [remount, setRemount]=useState(false)
   const navigate=useNavigate();
 
   useEffect(()=>{
-    // localStorage.removeItem('username')
-    // localStorage.removeItem('isLoggedIn')
-    // localStorage.removeItem('token')
     if(localStorage.getItem('username') && localStorage.getItem('isLoggedIn') && localStorage.getItem('token')){
       setcurrUser(localStorage.getItem('username'))
       setLoggedIn(true)
@@ -34,7 +32,7 @@ function App() {
         <Route element={<Protected isLoggedIn={isLoggedIn}/>}>
             <Route path='/' element={<Chat/>}/> 
         </Route>
-        <Route path='/home' element={<Home/>}/>
+        <Route path='/home' element={<Home />}/>
       </Routes>
       
     </div>
