@@ -16,7 +16,10 @@ import img from './icon.png'
 
 
 
-const socket = io('https://chat-app-backend-production-bd09.up.railway.app');
+const socket = io("https://chat-app-backend-production-bd09.up.railway.app", {
+    transports: ["websocket"], // ✅ Force WebSockets instead of polling
+    withCredentials: true,
+  });
   
 function Chat() {
     
