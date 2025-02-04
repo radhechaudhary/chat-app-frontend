@@ -81,8 +81,8 @@ function Chat() {
         const handleOnline=() => {   // Reconnect to the socket
             if (!socket.connected && localStorage.getItem('username')) {
               socket.connect();
-              socket.emit('get_saved_messages', localStorage.getItem('username'))
             }
+            socket.emit('get_saved_messages', localStorage.getItem('username'))
           }
 
         // Attach event listeners
@@ -129,7 +129,7 @@ function Chat() {
         };
     }, []);
 
-    const moveUserToTop = (list, username) => {
+    const moveUserToTop = (list, username) => { // function to move the chat to top when messge recieved
         const objToMove = list.find((item) => item.username === username);
         return objToMove
             ? [objToMove, ...list.filter((item) => item.username !== username)]
