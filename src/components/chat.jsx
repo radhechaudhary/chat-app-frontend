@@ -17,6 +17,7 @@ import img from './icon.png'
 
 
 const socket = io("https://chat-app-backend-production-bd09.up.railway.app", {
+    query:{userId:localStorage.getItem('username')},
     transports: ["websocket"], // ✅ Force WebSockets instead of polling
     withCredentials: true,
   });
@@ -77,10 +78,16 @@ function Chat() {
                 }
             }
         };
+        const handleOnline=() => {   // Reconnect to the socket
+            if (!socket.connected) {
+              socket.connect();
+            }
+          }
 
         // Attach event listeners
         window.addEventListener('beforeunload', handleBeforeUnload);
         document.addEventListener('visibilitychange', handleVisibilityChange);
+        window.addEventListener("online",handleOnline );
 
         // Cleanup on component unmount
         return () => {
@@ -100,7 +107,6 @@ function Chat() {
             const messages=JSON.parse(localStorage.getItem('messages'))
             setChatMessages({...messages})
         }
-        socket.emit('register', localStorage.getItem('username'))  // register the user socket every time component mounts
         socket.emit('get_saved_messages', localStorage.getItem('username'))
         socket.emit('update_status', localStorage.getItem('username'), true );
         
