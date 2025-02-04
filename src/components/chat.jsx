@@ -85,9 +85,6 @@ function Chat() {
                     console.log("Socket reconnected!");
                     socket.emit('get_saved_messages', localStorage.getItem('username'))
                 })
-            }
-            else{
-                socket.emit('get_saved_messages', localStorage.getItem('username'))
             }    
         }
 
@@ -100,6 +97,7 @@ function Chat() {
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
             document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener("online",handleOnline);
         };
     }, []);
     
