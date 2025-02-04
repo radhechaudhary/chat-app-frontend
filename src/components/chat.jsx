@@ -21,7 +21,7 @@ const socket = io("https://chat-app-backend-production-bd09.up.railway.app", {
     transports: ["websocket"], // ✅ Force WebSockets instead of polling
     withCredentials: true,
     reconnection: true,        // ✅ Enable automatic reconnection
-    reconnectionAttempts: 5,   // ✅ Try reconnecting up to 5 times
+    reconnectionAttempts: 10,   // ✅ Try reconnecting up to 5 times
     reconnectionDelay: 2000,   // ✅ Wait 2 seconds before retrying
     reconnectionDelayMax: 5000 // ✅ Max delay of 5 seconds
 });
@@ -107,10 +107,13 @@ function Chat() {
         }
         socket.on('connect',()=>{
             console.log("✅ Reconnected!");
-            socket.emit("get-saved_messages", localStorage.getItem("username"));
+            socket.emit("get_saved_messages", localStorage.getItem("username"));
         })
         socket.emit('get_saved_messages', localStorage.getItem('username'))
         socket.emit('update_status', localStorage.getItem('username'), true );
+        return()=>{
+            socket.off('connect')
+        }
     },[])
     
     useEffect(() => {  // add event listner for esc key!!
