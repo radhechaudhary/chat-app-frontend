@@ -54,7 +54,8 @@ function ChatList({socket, openSettings, stopEditing, setopenedSettings, ChatMes
     },[chatList])
 
     function startChatting(indx){ // function to change or start the current chat....
-        openSettings();
+        setopenedSettings(false)
+        stopEditing();
         socket.off('isOnline')
         if(addingNewChat){
             const curr={...searched[indx], type:'private'}
