@@ -17,6 +17,8 @@ import sound from './tone.mp3'
 
 
 
+
+
 const socket = io("https://chat-app-backend-production-bd09.up.railway.app", {
     query: { userId: localStorage.getItem("username") },
     transports: ["websocket"], // ✅ Force WebSockets instead of polling
@@ -93,6 +95,7 @@ function Chat() {
             window.removeEventListener('beforeunload', handleBeforeUnload);
             document.removeEventListener('visibilitychange', handleVisibilityChange);
         };
+        
     }, []);
     
     useEffect(()=>{  // useEffect which runs when component mounts
@@ -142,9 +145,12 @@ function Chat() {
     };
 
     useEffect(() => {  // to recieve private messages
-        const sound= new Audio({sound});
-        sound.play()
+        
         const handlePrivateMessage = ({ username, message, time }) => {
+            if(username!==currentChatUser.username){
+                const audio= new Audio(sound)
+                audio.play()
+            }
             setChatMessages((prevChatMessages) => {
                 const updatedMessages = {
                     ...prevChatMessages,
@@ -192,9 +198,14 @@ function Chat() {
     }, [currentChatUser]);
     
     useEffect (()=>{ // recieve group messages
-        const sound= new Audio({sound});
-        sound.play()
+        
         function handleGroupMessage({username, sender, message, time}){
+            
+            if(username!==currentChatUser.username){
+                const audio= new Audio(sound)
+                audio.play()
+            }
+            
             var currSender=sender;
             console.log(prevSender)
             if(currSender!==prevSender){
