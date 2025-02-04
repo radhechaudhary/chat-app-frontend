@@ -17,10 +17,10 @@ function Signup(prop) {
     const [profileImage, setProfileImage]=useState(null);
     const [image, setImage]=useState(null);
 
-    function handleChange(e){
+    function handleChange(e){ // handle changes in the inputs
         const name=e.target.name;
         const value=e.target.value;
-        if(!(name==="name" && value.length>15) || !(name==='username' || value.length>15 )){
+        if(!(name==="name" && value.length>15 ) || !(name==='username' || value.length>15 || value.length<8 )){
           setValues(
             {
                 ...values,
@@ -29,9 +29,7 @@ function Signup(prop) {
           )
         }   
     }
-
-    function handleImageChange(e){
-      // alert('images uploaded')
+    function handleImageChange(e){ // handle image change in the input 
         const file=e.target.files[0];
         if (file) {
           setImage(file)
@@ -42,33 +40,31 @@ function Signup(prop) {
           reader.readAsDataURL(file); // Read the file as a data URL
         }
     }
-
-    function submit(e){
+    function submit(e){ // submit the data
         setSubmmited(true)
           e.preventDefault();
-      }
-    function uploadImage(e){
+    }
+    function uploadImage(e){ // upload the image 
       setUploaded(true);
       e.preventDefault();
     }
 
-
-      useEffect(()=>{
+      useEffect(()=>{  // upload data to backend
         if(values.username!=="" && submitted){
           setSubmmited(false)
-          setLoading(true)
+          setLoading(true) // start loading
           axios.post("https://chat-app-backend-production-bd09.up.railway.app/signup", {name:values.name, username:values.username, password:values.password})
           .then((response)=>{
-            if(response.data.status==="valid" || response.data.status==="no file"){
-              prop.setcurrUser(response.data.username);
+            if(response.data.status==="valid"){
+              // setting data to username
+              prop.setcurrUser(response.data.username); 
               localStorage.setItem("username", response.data.username);
               localStorage.setItem('isLoggedIn', true)
               localStorage.setItem("token",response.data.token);
               localStorage.setItem('name', values.name);
-              setLoading(false)
+              setLoading(false) //stopped loading
               setUploading(true)
-              setError("")
-              // navigate('/', {replace:true})
+              setError("") // reving all errors
             }
             else{
                 setError(response.data)
@@ -86,26 +82,24 @@ function Signup(prop) {
     useEffect(()=>{
       if(uploading){
         setUploading(false);
-        setLoading(true);
+        setLoading(true); // start loading
         const formData = new FormData();
         formData.append('file', image); // 'file' is the field name expected by the server
         formData.append('username', values.username);
         formData.append('token', localStorage.getItem('token'));
         axios.post("https://chat-app-backend-production-bd09.up.railway.app/upload-profile-photo", formData)
         .then((response)=>{
-          if(response.data.status==='valid'){
-            prop.setLoggedIn(true);
-            setLoading(false)
+          if(response.data.status==='valid' || response.data.status==="no file"){ // skip if the photo is not uploaded
+            prop.setLoggedIn(true); // logIn now
+            setLoading(false) // stop loading
             localStorage.setItem('profile-photo', `${response.data.photo_url}?t=${new Date().getTime()}`);
-            navigate('/', {replace:true})
+            navigate('/', {replace:true}) // navigate to home
           }
         })
         .catch((err)=>{
           console.log(err.message);
         })
-        prop.setLoggedIn(true);
-      }
-      
+      }  
     },[uploaded])
 
 

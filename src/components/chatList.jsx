@@ -5,7 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import Add from './add';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentChatUser, inputValue, setInputValue, setCurrentChatUser, setChatList, chatList, setAddingNewChat, addingNewChat, startChatting, searched, setSearched, makingGroup, setMakingGroup, isTyping, setIsTyping, chatList_updateStatus} ) {
+function ChatList({socket, openSettings, setopenedSettings, ChatMessages, newGroupList, setNewGroupList, currentChatUser, inputValue, setInputValue, setCurrentChatUser, setChatList, chatList, setAddingNewChat, addingNewChat, startChatting, searched, setSearched, makingGroup, setMakingGroup, isTyping, setIsTyping, chatList_updateStatus} ) {
 
     function handleChange(e){ // function to handle change is the searchbar 
         setInputValue(e.target.value);  
@@ -54,6 +54,7 @@ function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentC
     },[chatList])
 
     function startChatting(indx){ // function to change or start the current chat....
+        openSettings();
         socket.off('isOnline')
         if(addingNewChat){
             const curr={...searched[indx], type:'private'}
@@ -123,7 +124,7 @@ function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentC
             <div className='action'>
                 <div className="nav">
                     <h2>Chats</h2>
-                    <IconButton onClick={()=>{setAddingNewChat(!addingNewChat)}} sx={{height:"fit-content"}}aria-label="delete">
+                    <IconButton onClick={()=>{openSettings(); setAddingNewChat(!addingNewChat); }} sx={{height:"fit-content"}}aria-label="delete">
                         <AddCircleIcon sx={{color:"white"}}/>
                     </IconButton>
                 </div>

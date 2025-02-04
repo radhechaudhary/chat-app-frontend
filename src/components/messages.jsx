@@ -19,7 +19,6 @@ function Messages({prevSender, setprevSender,socket, ChatMessages, setChatMessag
             socket.off('UserTyping')
         }
     },[])
-
     useEffect(()=>{  // scroll messages to bottom when chat is opened
         const div = scrollBottomRef.current;
         if (div) {
@@ -31,25 +30,20 @@ function Messages({prevSender, setprevSender,socket, ChatMessages, setChatMessag
         setCurrentMessage(e.target.value);
     }
     useEffect(()=>{  // useEffect for typing effect
+        let handler;
         if(currentMessage.trim()!==""){
             if(currentChatUser.members){
                 socket.emit('typing', currentChatUser, localStorage.getItem('username'));
-                var handler=setTimeout(()=>{
-                    socket.emit('stoppedTyping', currentChatUser, localStorage.getItem('username'))
-                }, 1500)
             }
             else {
                 socket.emit('typing', currentChatUser.username, localStorage.getItem('username'))
-                var handler=setTimeout(()=>{
-                    socket.emit('stoppedTyping', currentChatUser.username, localStorage.getItem('username'))
-                }, 1500)
             };
         } 
-        var handler=setTimeout(()=>{
+        handler=setTimeout(()=>{ // if stopped typing emit stopped typing apter 1.5s
             socket.emit('stoppedTyping', currentChatUser.username, localStorage.getItem('username'))
         }, 1500)
         return ()=>{
-            clearTimeout(handler);
+            clearTimeout(handler); // cleaar the timeout if useEffect is called befire timeOut is executed
         }  
     },[currentMessage])
 
@@ -102,7 +96,6 @@ function Messages({prevSender, setprevSender,socket, ChatMessages, setChatMessag
             }
             e.preventDefault();
     }
-
     useEffect(()=>{    // useEffect to send a private message to the current user via socket
         if(sendingMessage){
             const date=new Date();
@@ -185,5 +178,4 @@ function Messages({prevSender, setprevSender,socket, ChatMessages, setChatMessag
 </div>
   )
 }
-
 export default Messages

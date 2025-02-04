@@ -244,6 +244,12 @@ function Chat() {
     },[addingNewChat, makingGroup])
 
     function openSettings(){ // function to open settings
+        if(addingNewChat){
+            setAddingNewChat(false);
+        }
+        if(makingGroup){
+            setMakingGroup(false);
+        }
         if(editingData){
             setNameInputValue(localStorage.getItem('name'))
             setBioInputValue("Hey! there i'm using let's chat" || localStorage.getItem('bio'))
@@ -252,6 +258,7 @@ function Chat() {
             setEditingData(false);
             return;
         }
+        setEditingData(false);
         setopenedSettings(!openedSettings)
     }
     function startEditingProfile(){ // function to start editing
@@ -320,9 +327,9 @@ return (
     <div className='chat-page'>
             <div className='header'><img src={img}/> Let's Chat</div>
             
-            <ChatList socket={socket} chatList_updateStatus={chatList_updateStatus} isTyping={isTyping} setIsTyping={setIsTyping} currentChatUser={currentChatUser} inputValue={inputValue} setInputValue={setInputValue} setCurrentChatUser={setCurrentChatUser} setChatList={setChatList} chatList={chatList} setAddingNewChat={setAddingNewChat} addingNewChat={addingNewChat} searched={searched} setSearched={setSearched} makingGroup={makingGroup} setMakingGroup={setMakingGroup} newGroupList={newGroupList} setNewGroupList={setNewGroupList} ChatMessages={ChatMessages} />
+            <ChatList socket={socket} chatList_updateStatus={chatList_updateStatus} openSettings={openSettings} setopenedSettings={setopenedSettings} setEditingData={setEditingData} isTyping={isTyping} setIsTyping={setIsTyping} currentChatUser={currentChatUser} inputValue={inputValue} setInputValue={setInputValue} setCurrentChatUser={setCurrentChatUser} setChatList={setChatList} chatList={chatList} setAddingNewChat={setAddingNewChat} addingNewChat={addingNewChat} searched={searched} setSearched={setSearched} makingGroup={makingGroup} setMakingGroup={setMakingGroup} newGroupList={newGroupList} setNewGroupList={setNewGroupList} ChatMessages={ChatMessages} />
 
-            <Messages prevSender={prevSender} setprevSender={setprevSender} socket={socket} isTyping={isTyping} setIsTyping={setIsTyping} currentChatUser={currentChatUser} setCurrentChatUser={setCurrentChatUser} chatList_updateStatus={chatList_updateStatus} ChatMessages={ChatMessages} setChatMessages={setChatMessages}/>
+            <Messages setopenedSettings={setopenedSettings} openSettings={openSettings} setEditingData={setEditingData} prevSender={prevSender} setprevSender={setprevSender} socket={socket} isTyping={isTyping} setIsTyping={setIsTyping} currentChatUser={currentChatUser} setCurrentChatUser={setCurrentChatUser} chatList_updateStatus={chatList_updateStatus} ChatMessages={ChatMessages} setChatMessages={setChatMessages}/>
 
             <div className='profile-photo-and-setting profile-photo' style={{position:'absolute', bottom:'10px', left:'25px' , transform:'translate(-50%, 0%)', display:'flex', flexDirection:'column', gap:'10px'}}>
                     <Avatar alt="Remy Sharp" sx={{width:'30px', height:'30px'}} src={updated_profile_photo || localStorage.getItem('profile-photo')} />
