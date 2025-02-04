@@ -87,11 +87,12 @@ function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentC
         }
         setInputValue("")    
     }
-    let interval;
+    
     useEffect(()=>{ //  to emit reuest to get active status repeatedly when currentChatuser Changes
+        let interval;
         if(currentChatUser.username){
             interval=setInterval(()=>{
-                if(socket.connected() && currentChatUser.username){
+                if(socket.connected && currentChatUser.username){
                     socket.emit('isOnline', (currentChatUser.username))
                 }
             }, 3000);
@@ -101,13 +102,14 @@ function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentC
         } 
     },[currentChatUser])
     useEffect(()=>{  // to recieve active status for currUser
-        socket.on('isOnline', (isOnline)=>{
+        const handleOnline=(isOnline)=>{
             setCurrentChatUser((prev)=>({...prev, isOnline:isOnline}))
-        }) 
-        return()=>{
-            socket.off('isOnline')
         }
-    })
+        socket.on('isOnline', handleOnline ) 
+        return()=>{
+            socket.off('isOnline', handleOnline)
+        }
+    },[])
 
   return (
       <div className={`List ${!currentChatUser.username?'show':null}`}>
