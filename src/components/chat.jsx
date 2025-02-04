@@ -243,7 +243,7 @@ function Chat() {
         setInputValue("")
     },[addingNewChat, makingGroup])
 
-    function openSettings(){
+    function openSettings(){ // function to open settings
         if(editingData){
             setNameInputValue(localStorage.getItem('name'))
             setBioInputValue("Hey! there i'm using let's chat" || localStorage.getItem('bio'))
@@ -254,10 +254,10 @@ function Chat() {
         }
         setopenedSettings(!openedSettings)
     }
-    function startEditingProfile(){
+    function startEditingProfile(){ // function to start editing
         setEditingData(true);
     }
-    function handleChange(e){
+    function handleChange(e){ // handle change for name and bio in editing section
         if(e.target.name==='bio'){
             if(e.target.value.length<=100){
                 setBioInputValue(e.target.value);
@@ -269,7 +269,7 @@ function Chat() {
             }   
         }   
     }
-    function handleImageChange(e){
+    function handleImageChange(e){ // hande image Change  
         // alert('images uploaded')
           const file=e.target.files[0];
           if (file) {
@@ -281,7 +281,7 @@ function Chat() {
             reader.readAsDataURL(file); // Read the file as a data URL
           }
       }
-    function saveEditData(){
+    function saveEditData(){ // function save the edited data
         setEditingData(false);
         if(nameInputValue!==localStorage.getItem('name') || bioInputValue!==localStorage.getItem('bio') || updated_profile_photo){
             localStorage.setItem('name', nameInputValue);
@@ -294,7 +294,7 @@ function Chat() {
         }
         
     }
-    useEffect(()=>{
+    useEffect(()=>{ // useEffect to upload the edited data to backend
         if(uploading_data){
             set_updated_profile_photo(null);
             const formData = new FormData();

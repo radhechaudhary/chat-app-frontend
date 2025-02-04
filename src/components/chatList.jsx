@@ -3,12 +3,9 @@ import { IconButton } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Avatar from '@mui/material/Avatar';
 import Add from './add';
-import CancelIcon from '@mui/icons-material/Cancel';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentChatUser, inputValue, setInputValue, setCurrentChatUser, setChatList, chatList, setAddingNewChat, addingNewChat, startChatting, searched, setSearched, makingGroup, setMakingGroup, isTyping, setIsTyping, chatList_updateStatus} ) {
-
-    
 
     function handleChange(e){ // function to handle change is the searchbar 
         setInputValue(e.target.value);  
@@ -88,7 +85,7 @@ function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentC
         setInputValue("")    
     }
     
-    useEffect(() => {
+    useEffect(() => {  // use Effect to emit isOnline for current ChatUser
         let interval; // Declare interval variable
 
         if (currentChatUser.username) {
@@ -142,8 +139,7 @@ function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentC
                             <div>
                                 <h3 style={{fontWeight:'300', fontSize:"16px", marginBottom:"0px"}}>{value.name}</h3>
                                 {isTyping[value.username] && currentChatUser.username!==value.username?<p style={{fontSize:"12px", color:"rgb(223, 73, 223)", margin:"0px"}}>typing...</p>:ChatMessages[value.username]?<p style={{fontSize:"12px", color:"rgb(100, 100, 100)", margin:"0px", width:'130px', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow:'hidden'}}>{ChatMessages[value.username][ChatMessages[value.username].length-1].sentBy==="me"?<span>me:  </span>:value.type==="group"?<span>{`${ChatMessages[value.username][ChatMessages[value.username].length-1].sender}:`}</span>:null}{ChatMessages[value.username][ChatMessages[value.username].length-1].message}</p>:<p style={{fontSize:"12px", color:"rgb(100, 100, 100)", margin:"0px"}}>...</p>}
-                            </div>
-                            
+                            </div> 
                         </div>
                     )
                 })}
