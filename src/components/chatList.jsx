@@ -88,28 +88,38 @@ function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentC
         setInputValue("")    
     }
     
-    useEffect(()=>{ //  to emit reuest to get active status repeatedly when currentChatuser Changes
-        let interval;
-        if(currentChatUser.username){
-            interval=setInterval(()=>{
-                if(socket.connected && currentChatUser.username){
-                    socket.emit('isOnline', (currentChatUser.username))
+    useEffect(() => {
+        let interval; // Declare interval variable
+
+        if (currentChatUser.username) {
+            interval = setInterval(() => {
+                
+                if (socket.connected && currentChatUser.username) {
+                    socket.emit("isOnline", currentChatUser.username);
                 }
             }, 3000);
         }
-        return()=>{
-            clearInterval(interval);
-        } 
-    },[currentChatUser])
-    useEffect(()=>{  // to recieve active status for currUser
-        const handleOnline=(isOnline)=>{
-            setCurrentChatUser((prev)=>({...prev, isOnline:isOnline}))
-        }
-        socket.on('isOnline', handleOnline ) 
-        return()=>{
-            socket.off('isOnline', handleOnline)
-        }
-    },[])
+
+        return () => {
+            if (interval) {
+                clearInterval(interval); // Clear interval on component unmount or user change
+            }
+        };
+    }, [currentChatUser]);
+
+    // Listen for 'isOnline' event and update state
+    useEffect(() => {
+        const handleIsOnline = (isOnline) => {
+            console.log(isOnline)
+            setCurrentChatUser((prev) => ({ ...prev, isOnline }));
+        };
+
+        socket.on("Online", handleIsOnline);
+
+        return () => {
+            socket.off("Online", handleIsOnline); // Cleanup to prevent duplicate listeners
+        };
+    }, []);
 
   return (
       <div className={`List ${!currentChatUser.username?'show':null}`}>
