@@ -256,6 +256,7 @@ function Chat() {
             set_updated_profile_photo(null);
             setImage(null);
             setEditingData(false);
+            if(e.target.name==='add') setopenedSettings(false)
             return;
         }
         setEditingData(false);
@@ -350,7 +351,7 @@ return (
                         {editingData?
                         <form className='edit-profile' style={{display:'flex', flexDirection:'column', gap:'10px'}}>
                             <h1 style={{color:'white'}}>
-                                <ArrowBackIosIcon onClick={()=>{openSettings(); setImage(null); set_updated_profile_photo(null)}} sx={{color:"white", cursor:'pointer',}}/>
+                                <ArrowBackIosIcon onClick={()=>{openSettings();  setImage(null); set_updated_profile_photo(null)}} sx={{color:"white", cursor:'pointer',}}/>
                                 Your Profile
                             </h1>
                             <div className='name-and-photo' style={{display:'flex', flexDirection:'column', alignItems:'center', gap:'10px', backgroundColor:'rgb(87, 87, 87)', borderRadius:'5px', padding: '10px 5px'}}>

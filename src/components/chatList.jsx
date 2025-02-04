@@ -124,7 +124,7 @@ function ChatList({socket, openSettings, setopenedSettings, ChatMessages, newGro
             <div className='action'>
                 <div className="nav">
                     <h2>Chats</h2>
-                    <IconButton onClick={()=>{openSettings(); setAddingNewChat(!addingNewChat); }} sx={{height:"fit-content"}}aria-label="delete">
+                    <IconButton name="add" onClick={(e)=>{openSettings(e); setAddingNewChat(!addingNewChat); }} sx={{height:"fit-content"}}aria-label="delete">
                         <AddCircleIcon sx={{color:"white"}}/>
                     </IconButton>
                 </div>
