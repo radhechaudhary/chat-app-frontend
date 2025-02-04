@@ -91,7 +91,6 @@ function Chat() {
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
             document.removeEventListener('visibilitychange', handleVisibilityChange);
-            window.removeEventListener("online",handleOnline);
         };
     }, []);
     
