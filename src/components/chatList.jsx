@@ -5,7 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import Add from './add';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-function ChatList({socket, openSettings, setopenedSettings, ChatMessages, newGroupList, setNewGroupList, currentChatUser, inputValue, setInputValue, setCurrentChatUser, setChatList, chatList, setAddingNewChat, addingNewChat, startChatting, searched, setSearched, makingGroup, setMakingGroup, isTyping, setIsTyping, chatList_updateStatus} ) {
+function ChatList({socket, openSettings, stopEditing, setopenedSettings, ChatMessages, newGroupList, setNewGroupList, currentChatUser, inputValue, setInputValue, setCurrentChatUser, setChatList, chatList, setAddingNewChat, addingNewChat, startChatting, searched, setSearched, makingGroup, setMakingGroup, isTyping, setIsTyping, chatList_updateStatus} ) {
 
     function handleChange(e){ // function to handle change is the searchbar 
         setInputValue(e.target.value);  
@@ -108,7 +108,6 @@ function ChatList({socket, openSettings, setopenedSettings, ChatMessages, newGro
     // Listen for 'isOnline' event and update state
     useEffect(() => {
         const handleIsOnline = (isOnline) => {
-            console.log(isOnline)
             setCurrentChatUser((prev) => ({ ...prev, isOnline }));
         };
 
@@ -124,7 +123,7 @@ function ChatList({socket, openSettings, setopenedSettings, ChatMessages, newGro
             <div className='action'>
                 <div className="nav">
                     <h2>Chats</h2>
-                    <IconButton name="add" onClick={(e)=>{openSettings(e); setAddingNewChat(!addingNewChat); }} sx={{height:"fit-content"}}aria-label="delete">
+                    <IconButton onClick={()=>{setopenedSettings(false); stopEditing(); setAddingNewChat(!addingNewChat); }} sx={{height:"fit-content"}}aria-label="delete">
                         <AddCircleIcon sx={{color:"white"}}/>
                     </IconButton>
                 </div>
@@ -133,7 +132,7 @@ function ChatList({socket, openSettings, setopenedSettings, ChatMessages, newGro
             <div className='chat-list'>
                 {chatList.map((value, index)=>{
                     return (
-                        <div key={index} className={`list-item ${value.username===currentChatUser.username?'list-item-on-focus':null}`} onClick={!addingNewChat?()=>{startChatting(index)}:()=>{setAddingNewChat(false)}}>
+                        <div key={index} className={`list-item ${value.username===currentChatUser.username?'list-item-on-focus':null}`} onClick={(!addingNewChat)?()=>{startChatting(index); setopenedSettings(false); stopEditing()}:()=>{setAddingNewChat(false)}}>
                             {value.unread?<div className="unread-badge"><p style={{margin:'0', padding:'0', fontSize:'10px', fontWeight:'300', color:'rgba(40, 39, 40, 0.9)'}}>{value.unreadMessagesCount}</p></div>:null}
                             <MoreVertIcon className="more-button"/>
                             <Avatar alt="Remy Sharp" src={value.type==='group'?"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0somSUm3IdLDiKcjOB2elzR8A_JgAxponNQ&s":value.profilephoto}/>

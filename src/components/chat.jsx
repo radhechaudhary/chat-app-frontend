@@ -245,25 +245,26 @@ function Chat() {
 
     function openSettings(e){ // function to open settings
         if(addingNewChat){
-            setAddingNewChat(false);
+            setAddingNewChat(false)
+            if(makingGroup){
+                setMakingGroup(false);
+                setSearched([])
+            }
         }
-        if(makingGroup){
-            setMakingGroup(false);
-        }
+
+        setopenedSettings(!openedSettings)
+    }
+    function startEditingProfile(){ // function to start editing
+        setEditingData(true);
+    }
+    function stopEditing(){ // function to stop editing
         if(editingData){
             setNameInputValue(localStorage.getItem('name'))
             setBioInputValue("Hey! there i'm using let's chat" || localStorage.getItem('bio'))
             set_updated_profile_photo(null);
             setImage(null);
             setEditingData(false);
-            if(e.target.name==='add') setopenedSettings(false)
-            return;
         }
-        setEditingData(false);
-        setopenedSettings(!openedSettings)
-    }
-    function startEditingProfile(){ // function to start editing
-        setEditingData(true);
     }
     function handleChange(e){ // handle change for name and bio in editing section
         if(e.target.name==='bio'){
@@ -328,9 +329,9 @@ return (
     <div className='chat-page'>
             <div className='header'><img src={img}/> Let's Chat</div>
             
-            <ChatList socket={socket} chatList_updateStatus={chatList_updateStatus} openSettings={openSettings} setopenedSettings={setopenedSettings} setEditingData={setEditingData} isTyping={isTyping} setIsTyping={setIsTyping} currentChatUser={currentChatUser} inputValue={inputValue} setInputValue={setInputValue} setCurrentChatUser={setCurrentChatUser} setChatList={setChatList} chatList={chatList} setAddingNewChat={setAddingNewChat} addingNewChat={addingNewChat} searched={searched} setSearched={setSearched} makingGroup={makingGroup} setMakingGroup={setMakingGroup} newGroupList={newGroupList} setNewGroupList={setNewGroupList} ChatMessages={ChatMessages} />
+            <ChatList socket={socket} stopEditing={stopEditing} chatList_updateStatus={chatList_updateStatus} openSettings={openSettings} setopenedSettings={setopenedSettings} setEditingData={setEditingData} isTyping={isTyping} setIsTyping={setIsTyping} currentChatUser={currentChatUser} inputValue={inputValue} setInputValue={setInputValue} setCurrentChatUser={setCurrentChatUser} setChatList={setChatList} chatList={chatList} setAddingNewChat={setAddingNewChat} addingNewChat={addingNewChat} searched={searched} setSearched={setSearched} makingGroup={makingGroup} setMakingGroup={setMakingGroup} newGroupList={newGroupList} setNewGroupList={setNewGroupList} ChatMessages={ChatMessages} />
 
-            <Messages setopenedSettings={setopenedSettings} openSettings={openSettings} setEditingData={setEditingData} prevSender={prevSender} setprevSender={setprevSender} socket={socket} isTyping={isTyping} setIsTyping={setIsTyping} currentChatUser={currentChatUser} setCurrentChatUser={setCurrentChatUser} chatList_updateStatus={chatList_updateStatus} ChatMessages={ChatMessages} setChatMessages={setChatMessages}/>
+            <Messages stopEditing={stopEditing} setopenedSettings={setopenedSettings} openSettings={openSettings} setEditingData={setEditingData} prevSender={prevSender} setprevSender={setprevSender} socket={socket} isTyping={isTyping} setIsTyping={setIsTyping} currentChatUser={currentChatUser} setCurrentChatUser={setCurrentChatUser} chatList_updateStatus={chatList_updateStatus} ChatMessages={ChatMessages} setChatMessages={setChatMessages}/>
 
             <div className='profile-photo-and-setting profile-photo' style={{position:'absolute', bottom:'10px', left:'25px' , transform:'translate(-50%, 0%)', display:'flex', flexDirection:'column', gap:'10px'}}>
                     <Avatar alt="Remy Sharp" sx={{width:'30px', height:'30px'}} src={updated_profile_photo || localStorage.getItem('profile-photo')} />
@@ -351,7 +352,7 @@ return (
                         {editingData?
                         <form className='edit-profile' style={{display:'flex', flexDirection:'column', gap:'10px'}}>
                             <h1 style={{color:'white'}}>
-                                <ArrowBackIosIcon onClick={()=>{openSettings();  setImage(null); set_updated_profile_photo(null)}} sx={{color:"white", cursor:'pointer',}}/>
+                                <ArrowBackIosIcon onClick={()=>{stopEditing();  setImage(null); set_updated_profile_photo(null)}} sx={{color:"white", cursor:'pointer',}}/>
                                 Your Profile
                             </h1>
                             <div className='name-and-photo' style={{display:'flex', flexDirection:'column', alignItems:'center', gap:'10px', backgroundColor:'rgb(87, 87, 87)', borderRadius:'5px', padding: '10px 5px'}}>
@@ -359,7 +360,7 @@ return (
                                     <div className='photo-and edit-button' style={{display:'flex', flexDirection:'column', alignItems:'center', width:'fit-content'}}>
                                         <Avatar alt="Remy Sharp" src={updated_profile_photo || localStorage.getItem('profile-photo')} sx={{width:'50px', height:'50px'}}/>
                                         <input id='update-photo' type='file' accept="image/*" onChange={handleImageChange} style={{display:'none'}}/>
-                                        <label for='update-photo'  style={{border:'none', cursor:'pointer', backgroundColor:'transparent', color:'rgb(223,73,223)'}}>Edit</label>
+                                        <label htmlFor='update-photo'  style={{border:'none', cursor:'pointer', backgroundColor:'transparent', color:'rgb(223,73,223)'}}>Edit</label>
                                     </div>
                                     <p style={{color:'rgb(147, 146, 146)', fontSize:'14px', margin:'0'}}>Choose a Name or an Option photo</p>
                                 </div>
