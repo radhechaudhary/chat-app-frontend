@@ -243,7 +243,7 @@ function Chat() {
         setInputValue("")
     },[addingNewChat, makingGroup])
 
-    function openSettings(){ // function to open settings
+    function openSettings(e){ // function to open settings
         if(addingNewChat){
             setAddingNewChat(false);
         }
