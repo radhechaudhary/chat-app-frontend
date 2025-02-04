@@ -159,7 +159,7 @@ function Messages({prevSender, setprevSender,socket, ChatMessages, setChatMessag
                 <div className="nameAndStatus" onClick={openProfileInfo} syle={{position:'relative', cursor:'pointer'}}>
                     
                     <h2 style={{cursor:'pointer'}}>{currentChatUser.name}</h2>
-                    {chatList_updateStatus[currentChatUser.username] && !isTyping[currentChatUser.username]?<p className='online-status'>online</p>:null}
+                    {currentChatUser.isOnline && !isTyping[currentChatUser.username]?<p className='online-status'>online</p>:null}
                     {isTyping[currentChatUser.username]?<p  style={{color:"rgb(223, 73, 223)"}} className='online-status'>typing...</p>:null}
                 </div>
                 

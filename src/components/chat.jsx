@@ -110,7 +110,6 @@ function Chat() {
         }
         socket.emit('get_saved_messages', localStorage.getItem('username'))
         socket.emit('update_status', localStorage.getItem('username'), true );
-        
     },[])
     
     useEffect(() => {  // add event listner for esc key!!
@@ -179,13 +178,8 @@ function Chat() {
     
         // Socket listeners
         socket.on('privateMessage', handlePrivateMessage);
-        socket.on('update_status_list', (list) => {
-            setChatList_updateStatus((prev) => ({ ...prev, ...list }));
-        });
-    
         return () => {
             socket.off('privateMessage', handlePrivateMessage);
-            socket.off('update_status_list');
             socket.off('AddnewChat');
         };
     }, [currentChatUser]);

@@ -8,6 +8,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentChatUser, inputValue, setInputValue, setCurrentChatUser, setChatList, chatList, setAddingNewChat, addingNewChat, startChatting, searched, setSearched, makingGroup, setMakingGroup, isTyping, setIsTyping, chatList_updateStatus} ) {
 
+    
+
     function handleChange(e){ // function to handle change is the searchbar 
         setInputValue(e.target.value);  
     }
@@ -55,8 +57,12 @@ function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentC
     },[chatList])
 
     function startChatting(indx){ // function to change or start the current chat....
+        socket.off('isOnline')
         if(addingNewChat){
-            setCurrentChatUser({...searched[0], type:'private'})
+            const curr={...searched[indx], type:'private'}
+            socket.emit('isOnline', (curr.username)); 
+            
+            setCurrentChatUser(curr)
             setChatList([{...searched[0], type:"private", unread:false, unreadMessagesCount:0},...chatList])
             setSearched([])
             setAddingNewChat(false)
@@ -69,17 +75,39 @@ function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentC
                     return { ...chat, unread:false, unreadMessagesCount:0 };  // Update the message
                 }
                 return chat;  // Return the original object if no match
-            })
+            }) 
             setCurrentChatUser(updatedChatList[indx])
             setChatList(updatedChatList)
             socket.emit('update_data', updatedChatList);
             socket.on('update_data',(list)=>{
                 setCurrentChatUser({...list[indx]})
                 setChatList(list);
-            })    
+            })
+               
         }
         setInputValue("")    
     }
+    let interval;
+    useEffect(()=>{ //  to emit reuest to get active status repeatedly when currentChatuser Changes
+        if(currentChatUser.username){
+            interval=setInterval(()=>{
+                if(socket.connected() && currentChatUser.username){
+                    socket.emit('isOnline', (currentChatUser.username))
+                }
+            }, 3000);
+        }
+        return()=>{
+            clearInterval(interval);
+        } 
+    },[currentChatUser])
+    useEffect(()=>{  // to recieve active status for currUser
+        socket.on('isOnline', (isOnline)=>{
+            currentChatUser.isOnline=isOnline;
+        }) 
+        return()=>{
+            socket.off('isOnline')
+        }
+    })
 
   return (
       <div className={`List ${!currentChatUser.username?'show':null}`}>
