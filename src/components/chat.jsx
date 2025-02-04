@@ -13,6 +13,7 @@ import axios from 'axios';
 import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
 import img from './icon.png'
+import sound from './tone.mp3'
 
 
 
@@ -141,6 +142,8 @@ function Chat() {
     };
 
     useEffect(() => {  // to recieve private messages
+        const sound= new Audio({sound});
+        sound.play()
         const handlePrivateMessage = ({ username, message, time }) => {
             setChatMessages((prevChatMessages) => {
                 const updatedMessages = {
@@ -189,7 +192,9 @@ function Chat() {
     }, [currentChatUser]);
     
     useEffect (()=>{ // recieve group messages
-        function handleGroupMessage({username, name, sender, message, time}){
+        const sound= new Audio({sound});
+        sound.play()
+        function handleGroupMessage({username, sender, message, time}){
             var currSender=sender;
             console.log(prevSender)
             if(currSender!==prevSender){
