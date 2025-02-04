@@ -5,7 +5,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
 function Login(prop) {
-  const navigate=useNavigate()
+  const navigate = useNavigate()
     const [values, setValues]=useState({username:"", password:""});
     const [submitted, setSubmmited]=useState(false)
     const [loading, setLoading]=useState(false);
@@ -35,7 +35,6 @@ function Login(prop) {
       axios.post("https://chat-app-backend-production-bd09.up.railway.app/login", {username:values.username, password:values.password})
       .then((response)=>{
         if(response.data.status==="valid"){
-          prop.setcurrUser(response.data.username);
           prop.setLoggedIn(true);
           localStorage.setItem("username", response.data.username);
           localStorage.setItem('isLoggedIn', true)
@@ -56,9 +55,7 @@ function Login(prop) {
         setLoading(false)
         console.log(err.message)
       })
-      }
-      
-      
+      } 
     }, [submitted])
   return (
     <div className="login enter-page">
