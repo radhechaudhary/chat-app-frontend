@@ -102,7 +102,7 @@ function ChatList({socket, ChatMessages, newGroupList, setNewGroupList, currentC
     },[currentChatUser])
     useEffect(()=>{  // to recieve active status for currUser
         socket.on('isOnline', (isOnline)=>{
-            currentChatUser.isOnline=isOnline;
+            setCurrentChatUser((prev)=>({...prev, isOnline:isOnline}))
         }) 
         return()=>{
             socket.off('isOnline')
