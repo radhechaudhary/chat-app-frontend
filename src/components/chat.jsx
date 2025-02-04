@@ -80,15 +80,21 @@ function Chat() {
         };
         const handleOnline=() => {   // Reconnect to the socket
             if (!socket.connected && localStorage.getItem('username')) {
-              socket.connect();
+                socket.connect();
+                socket.once("connect", () => {
+                    console.log("Socket reconnected!");
+                    socket.emit("get_saved_messages", localStorage.getItem("username"));
+                })
             }
-            socket.emit('get_saved_messages', localStorage.getItem('username'))
-          }
+            else{
+                socket.emit('get_saved_messages', localStorage.getItem('username'))
+            }    
+        }
 
         // Attach event listeners
         window.addEventListener('beforeunload', handleBeforeUnload);
         document.addEventListener('visibilitychange', handleVisibilityChange);
-        window.addEventListener("online",handleOnline );
+        window.addEventListener("online",handleOnline);
 
         // Cleanup on component unmount
         return () => {
