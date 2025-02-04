@@ -17,10 +17,15 @@ import img from './icon.png'
 
 
 const socket = io("https://chat-app-backend-production-bd09.up.railway.app", {
-    query:{userId:localStorage.getItem('username')},
+    query: { userId: localStorage.getItem("username") },
     transports: ["websocket"], // ✅ Force WebSockets instead of polling
     withCredentials: true,
-  });
+    reconnection: true,        // ✅ Enable automatic reconnection
+    reconnectionAttempts: 5,   // ✅ Try reconnecting up to 5 times
+    reconnectionDelay: 2000,   // ✅ Wait 2 seconds before retrying
+    reconnectionDelayMax: 5000 // ✅ Max delay of 5 seconds
+});
+
   
   
 function Chat() {
@@ -68,13 +73,6 @@ function Chat() {
 
         const handleVisibilityChange = () => {
             if (document.visibilityState === 'hidden') {
-                if (!socket.connected && localStorage.getItem('username')) {
-                    socket.connect();
-                    socket.on("connect", () => {
-                        console.log("Socket reconnected!");
-                        socket.emit('get_saved_messages', localStorage.getItem('username'))
-                    })
-                }   
                 if(localStorage.getItem('username')){
                     socket.emit('update_status', localStorage.getItem('username'), false )
                 }
@@ -84,20 +82,10 @@ function Chat() {
                 }
             }
         };
-        const handleOnline=() => {   // Reconnect to the socket
-            if (!socket.connected && localStorage.getItem('username')) {
-                socket.connect();
-                socket.on("connect", () => {
-                    console.log("Socket reconnected!");
-                    socket.emit('get_saved_messages', localStorage.getItem('username'))
-                })
-            }    
-        }
 
         // Attach event listeners
         window.addEventListener('beforeunload', handleBeforeUnload);
         document.addEventListener('visibilitychange', handleVisibilityChange);
-        window.addEventListener("online",handleOnline);
 
         // Cleanup on component unmount
         return () => {
@@ -118,6 +106,10 @@ function Chat() {
             const messages=JSON.parse(localStorage.getItem('messages'))
             setChatMessages({...messages})
         }
+        socket.on('connect',()=>{
+            console.log("✅ Reconnected!");
+            socket.emit("get-saved_messages", localStorage.getItem("username"));
+        })
         socket.emit('get_saved_messages', localStorage.getItem('username'))
         socket.emit('update_status', localStorage.getItem('username'), true );
     },[])
