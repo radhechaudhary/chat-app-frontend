@@ -79,8 +79,9 @@ function Chat() {
             }
         };
         const handleOnline=() => {   // Reconnect to the socket
-            if (!socket.connected) {
+            if (!socket.connected && localStorage.getItem('username')) {
               socket.connect();
+              socket.emit('get_saved_messages', localStorage.getItem('username'))
             }
           }
 
