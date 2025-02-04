@@ -57,11 +57,10 @@ function Chat() {
             socket.off('addInGroup')
         }
     }, [])// add In Group
+
     useEffect(() => {   // useEffect to add event listner for visibility and unloading
         const handleBeforeUnload = (event) => {
             if(localStorage.getItem('username')){
-                // socket.emit('update_active_status_false', localStorage.getItem('username'))
-                // localStorage.setItem('messages', JSON.stringify(ChatMessages))
                 socket.emit('update_status', localStorage.getItem('username'), false )
                 socket.emit('update_active_status_false', localStorage.getItem('username'), false )
             }
@@ -69,6 +68,13 @@ function Chat() {
 
         const handleVisibilityChange = () => {
             if (document.visibilityState === 'hidden') {
+                if (!socket.connected && localStorage.getItem('username')) {
+                    socket.connect();
+                    socket.on("connect", () => {
+                        console.log("Socket reconnected!");
+                        socket.emit('get_saved_messages', localStorage.getItem('username'))
+                    })
+                }   
                 if(localStorage.getItem('username')){
                     socket.emit('update_status', localStorage.getItem('username'), false )
                 }
