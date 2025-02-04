@@ -82,9 +82,8 @@ function Chat() {
             if (!socket.connected && localStorage.getItem('username')) {
                 socket.connect();
                 socket.once("connect", () => {
-                    console.log('connected again')
                     console.log("Socket reconnected!");
-                    socket.emit("get_saved_messages", localStorage.getItem("username"));
+                    socket.emit('get_saved_messages', localStorage.getItem('username'))
                 })
             }
             else{
