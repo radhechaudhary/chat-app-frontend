@@ -63,6 +63,7 @@ function Signup(prop) {
               localStorage.setItem("token",response.data.token);
               localStorage.setItem('name', values.name);
               setLoading(false) //stopped loading
+              prop.setLoggedIn(true);
               setUploading(true)
               setError("") // reving all errors
             }
