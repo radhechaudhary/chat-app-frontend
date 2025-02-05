@@ -56,14 +56,13 @@ function Signup(prop) {
           axios.post("https://chat-app-backend-production-bd09.up.railway.app/signup", {name:values.name, username:values.username, password:values.password})
           .then((response)=>{
             if(response.data.status==="valid"){
+              console.log(response.data.status)
               // setting data to username
-              prop.setcurrUser(response.data.username); 
               localStorage.setItem("username", response.data.username);
               localStorage.setItem('isLoggedIn', true)
               localStorage.setItem("token",response.data.token);
               localStorage.setItem('name', values.name);
               setLoading(false) //stopped loading
-              prop.setLoggedIn(true);
               setUploading(true)
               setError("") // reving all errors
             }
