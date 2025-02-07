@@ -68,7 +68,7 @@ function Login(prop) {
         <input type="text" name="username" onChange={(e)=>{handleChange(e)}} value={values.username} placeholder='Username'/>
         <input type="password" name="password" onChange={(e)=>{handleChange(e)}} value={values.password} placeholder='Password'/>
         {error?<p className='error'>{error}</p>:<p className='error'>{error}</p>}
-        <p>Dont't have an account? <Link to="/signup">Regester Here!</Link></p>
+        <p>Dont't have an account? <Link to="/signup">Register Here!</Link></p>
         <button type='submit'>Login  →</button>
       </form>
     </div>
