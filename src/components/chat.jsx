@@ -113,7 +113,6 @@ function Chat() {
             console.log("✅ Reconnected!");
             socket.emit("get_saved_messages", localStorage.getItem("username"));
         })
-        socket.emit('get_saved_messages', localStorage.getItem('username'))
         socket.emit('update_status', localStorage.getItem('username'), true );
         return()=>{
             socket.off('connect')
