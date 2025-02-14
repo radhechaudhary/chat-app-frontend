@@ -169,11 +169,15 @@ function Chat() {
                     } else {
                         socket.emit('newChat', username);
                         socket.once('AddnewChat', (user) => {
-                            if (user.username && !chatList.find(user.username)) {
-                                setChatList((prevList) => [
-                                    { ...user, type: "private", unread: true , unreadMessagesCount:1},
-                                    ...prevList,
-                                ]);
+                            if (user.username ) {
+                                const userExists = prevChatList.some((user) => user.username === username);
+                                if(!userExists){
+                                    setChatList((prevList) => [
+                                        { ...user, type: "private", unread: true , unreadMessagesCount:1},
+                                        ...prevList,
+                                    ]);
+                                }
+                                
                             }
                         });
                         
