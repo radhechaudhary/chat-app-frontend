@@ -176,11 +176,10 @@ function Chat() {
                                         { ...user, type: "private", unread: true , unreadMessagesCount:1},
                                         ...prevList,
                                     ]);
-                                }
-                                
+                                }   
                             }
                         });
-                        
+                        socket.off('AddnewChat');
                         return prevChatList;
                     }
                 });
@@ -188,12 +187,23 @@ function Chat() {
                 return updatedMessages;
             });
         };
+
+        // saved-messages
+        const handleSavedMessage=(messages)=>{
+            Object.keys(messages).map((username)=>{
+                messages[username].map((message)=>{
+                  handlePrivateMessage({username:username,  message: message.message, time:message.time});
+                })
+            })
+        }
+
     
         // Socket listeners
         socket.on('privateMessage', handlePrivateMessage);
+        socket.on('saved-messages', handleSavedMessage);
         return () => {
             socket.off('privateMessage', handlePrivateMessage);
-            socket.off('AddnewChat');
+            socket.off('saved-messages', handleSavedMessage);
         };
     }, [currentChatUser]);
     
