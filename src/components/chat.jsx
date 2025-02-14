@@ -179,7 +179,6 @@ function Chat() {
                                 ]); 
                             }
                         });
-                        socket.off('AddnewChat')
                         return prevChatList;
                     }
                 });
