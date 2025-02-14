@@ -169,7 +169,7 @@ function Chat() {
                             : updatedChatList;
                     } else {
                         socket.emit('newChat', username);
-                        socket.once('AddnewChat', (user) => {
+                        socket.on('AddnewChat', (user) => {
                             if (user.username && !added.has(user.username)) {
                                 added.add(user.username)
                                 setChatList((prevList) => [
@@ -178,6 +178,7 @@ function Chat() {
                                 ]); 
                             }
                         });
+                        socket.off('AddnewChat')
                         return prevChatList;
                     }
                 });
