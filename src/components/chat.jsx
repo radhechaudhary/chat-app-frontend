@@ -156,7 +156,7 @@ function Chat() {
                 // Update chatList within the same setState call
                 setChatList((prevChatList) => {
                     const userExists = prevChatList.some((user) => user.username === username);
-                    if (userExists || added.has(user.username)) {
+                    if (userExists || added.has(username)) {
                         const updatedChatList = prevChatList.map((chat) =>
                             chat.username === username && username !== currentChatUser.username
                                 ? { ...chat, type:'private', unread: true, unreadMessagesCount:chat.unreadMessagesCount+1 }
