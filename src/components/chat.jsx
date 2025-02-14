@@ -146,10 +146,6 @@ function Chat() {
     useEffect(() => {  // to recieve private messages
         
         const handlePrivateMessage = ({ username, message, time }) => {
-            if(username!==currentChatUser.username){
-                const audio= new Audio(sound)
-                audio.play()
-            }
             setChatMessages((prevChatMessages) => {
                 const updatedMessages = {
                     ...prevChatMessages,
@@ -173,13 +169,14 @@ function Chat() {
                     } else {
                         socket.emit('newChat', username);
                         socket.once('AddnewChat', (user) => {
-                            if (user.username) {
+                            if (user.username && !chatList.find(user.username)) {
                                 setChatList((prevList) => [
                                     { ...user, type: "private", unread: true , unreadMessagesCount:1},
                                     ...prevList,
                                 ]);
                             }
                         });
+                        
                         return prevChatList;
                     }
                 });
