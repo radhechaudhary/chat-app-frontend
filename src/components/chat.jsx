@@ -24,7 +24,7 @@ const socket = io("https://chat-app-backend-production-bd09.up.railway.app", {
     transports: ["websocket"], // ✅ Force WebSockets instead of polling
     withCredentials: true,
     reconnection: true,        // ✅ Enable automatic reconnection
-    reconnectionAttempts: 10,   // ✅ Try reconnecting up to 5 times
+    reconnectionAttempts: 100,   // ✅ Try reconnecting up to 5 times
     reconnectionDelay: 2000,   // ✅ Wait 2 seconds before retrying
     reconnectionDelayMax: 5000 // ✅ Max delay of 5 seconds
 });
