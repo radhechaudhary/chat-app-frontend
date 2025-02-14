@@ -144,7 +144,7 @@ function Chat() {
     };
 
     useEffect(() => {  // to recieve private messages
-        const added= new Set();
+        var added= new Set();
         
         const handlePrivateMessage = ({ username, message, time }) => {
             setChatMessages((prevChatMessages) => {
