@@ -157,6 +157,7 @@ function Chat() {
                 setChatList((prevChatList) => {
                     const userExists = prevChatList.some((user) => user.username === username);
                     if (userExists || added.has(username)) {
+                        console.log('message count')
                         const updatedChatList = prevChatList.map((chat) =>
                             chat.username === username && username !== currentChatUser.username
                                 ? { ...chat, type:'private', unread: true, unreadMessagesCount:chat.unreadMessagesCount+1 }
@@ -182,7 +183,6 @@ function Chat() {
                         return prevChatList;
                     }
                 });
-    
                 return updatedMessages;
             });
         };
