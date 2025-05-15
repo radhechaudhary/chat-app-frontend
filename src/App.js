@@ -29,7 +29,6 @@ function App() {
             {/* protected route */}
             <Route path='/' element={<Chat/>}/>
         </Route>
-        <Route path='/home' element={<Home />}/>
       </Routes>
       
     </div>
