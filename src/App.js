@@ -3,7 +3,6 @@ import Login from "./components/login";
 import Protected from "./protected";
 import {  Routes, Route,  useNavigate } from 'react-router-dom';
 import Chat from "./components/chat";
-import Home from "./components/home";
 import Signup from "./components/signup";
 
 

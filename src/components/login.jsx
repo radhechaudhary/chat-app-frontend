@@ -24,7 +24,6 @@ function Login(prop) {
 
     function submit(e){
       setSubmmited(true)
-      
         e.preventDefault();
     }
 
