@@ -34,20 +34,23 @@ function Login(prop) {
         setLoading(true)
       axios.post("http://localhost:4000/login", {username:values.username, password:values.password})
       .then((response)=>{
-        console.log(response.data)
         if(response.data.status==="valid"){
           prop.setcurrUser(response.data.username);
           prop.setLoggedIn(true);
           localStorage.setItem("username", response.data.username);
           localStorage.setItem('isLoggedIn', true)
           localStorage.setItem("token",response.data.token);
+          localStorage.setItem("name", response.data.name);
+          localStorage.setItem('profile-photo', `${response.data.profilephoto}?t=${new Date().getTime()}`);
           setLoading(false)
           setError("")
           navigate('/', {replace:true})
         }
         else{
+          setLoading(false)
           setError(response.data)
         }
+        
       })
       .catch((err)=>{
         setLoading(false)

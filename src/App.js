@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "./components/login";
 import Protected from "./protected";
 import {  Routes, Route,  useNavigate, replace } from 'react-router-dom';
@@ -12,10 +12,7 @@ function App() {
   const [isLoggedIn, setLoggedIn]=useState(false)
   const navigate=useNavigate();
 
-  useEffect(()=>{
-    // localStorage.removeItem('username')
-    // localStorage.removeItem('isLoggedIn')
-    // localStorage.removeItem('token')
+  useEffect(()=>{  // every time user reloads page to check if he is already logged in or not
     if(localStorage.getItem('username') && localStorage.getItem('isLoggedIn') && localStorage.getItem('token')){
       setcurrUser(localStorage.getItem('username'))
       setLoggedIn(true)
@@ -34,7 +31,7 @@ function App() {
         <Route element={<Protected isLoggedIn={isLoggedIn}/>}>
             <Route path='/' element={<Chat/>}/> 
         </Route>
-        <Route path='/home' element={<Home/>}/>
+        <Route path='/home' element={<Home />}/>
       </Routes>
       
     </div>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Outlet, replace, useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react'
+import { Outlet, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -11,19 +11,22 @@ function Protected(prop) {
   useEffect(()=>{
     setIsLoading(true)
     if(prop.isLoggedIn){
-      axios.post("http://localhost:4000/authenticate-user", {username:localStorage.getItem('username'), token:localStorage.getItem('token')})
-      .then((Response)=>{
-        if(Response.data==="valid"){
+      axios.post("http://localhost:4000/authenticate-user", {username:localStorage.getItem('username')},  {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}` // token verification whenever reloads page
+      }
+    })
+      .then((response)=>{
+        if(response.data.status==="valid"){
          setIsAuthenticated(true)
          setIsLoading(false)
         }
-        else{
-          console.log('remove')
+        else if(response.data.status==='error'){
           localStorage.removeItem('username')
           localStorage.removeItem('token')
           localStorage.removeItem('isLoggedIn')
           setIsLoading(false)
-          navigate('/login')
+          navigate('/login') // navigate to login page when user credentials are invalid
         }
       })
       .catch((err)=>{
