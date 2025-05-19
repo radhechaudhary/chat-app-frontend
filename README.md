@@ -1,4 +1,4 @@
-#Real Time Chat Application#
+# Let's Chat- A Real Time Chat Application#
 
 A web Based Chat Application where a user can login or create Account securely and chat/ call /video call to his/her friends who already have an account on the page. A user can also update hi profile details( name, bio, profile photo, etc).
 
